@@ -7,5 +7,5 @@ android {
 }
 
 dependencies {
-    api(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.ktx)
 }
