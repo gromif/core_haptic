@@ -5,7 +5,3 @@ plugins {
 android {
     namespace = "com.nevidimka655.haptic"
 }
-
-dependencies {
-    implementation(libs.androidx.core.ktx)
-}

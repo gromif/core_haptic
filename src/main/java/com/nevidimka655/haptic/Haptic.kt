@@ -7,13 +7,6 @@ import android.content.Context
 import android.os.VibrationEffect
 import android.os.VibrationEffect.Composition
 import android.os.Vibrator
-import android.view.View
-import androidx.core.view.HapticFeedbackConstantsCompat
-
-fun View.hapticToggleOn() = performHapticFeedback(HapticFeedbackConstantsCompat.TOGGLE_ON)
-fun View.hapticToggleOff() = performHapticFeedback(HapticFeedbackConstantsCompat.TOGGLE_OFF)
-fun View.hapticClick() = performHapticFeedback(HapticFeedbackConstantsCompat.CONTEXT_CLICK)
-fun View.hapticLongClick() = performHapticFeedback(HapticFeedbackConstantsCompat.LONG_PRESS)
 
 object Haptic {
     private var vibrator: Vibrator? = null
@@ -31,32 +24,16 @@ object Haptic {
         Effect.startComposition().addPrimitive(Composition.PRIMITIVE_LOW_TICK, 0.5f).addPrimitive(Composition.PRIMITIVE_QUICK_RISE, 0.01f, 100).compose()
     }
 
-    fun click() {
-        vibrator?.vibrate(effectClick)
-    }
+    fun click() = vibrate(effectClick)
+    fun clickHeavy() = vibrate(effectClickHeavy)
+    fun tick() = vibrate(effectTick)
+    fun toggle(state: Boolean) = vibrate(if (state) effectToggleOn else effectToggleOff)
+    fun rise() = vibrate(effectRise)
 
-    fun clickHeavy() {
-        vibrator?.vibrate(effectClickHeavy)
-    }
-
-    fun tick() {
+    fun vibrate(effect: Effect) {
         try {
-            vibrator?.vibrate(effectTick)
-        } catch (ignored: Exception) {}
-    }
-
-    fun toggle(state: Boolean) {
-        try {
-            vibrator?.vibrate(
-                if (state) effectToggleOn else effectToggleOff
-            )
-        } catch (ignored: Exception) {}
-    }
-
-    fun rise() {
-        try {
-            vibrator?.vibrate(effectRise)
-        } catch (ignored: Exception) {}
+            vibrator?.vibrate(effect)
+        } catch (_: Exception) {}
     }
 
     fun init(context: Context) {
