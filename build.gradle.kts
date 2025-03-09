@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "com.nevidimka655.haptic"
+    namespace = "io.gromif.ui.haptic"
 }
