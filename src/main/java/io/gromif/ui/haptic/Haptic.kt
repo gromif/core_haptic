@@ -14,27 +14,45 @@ object Haptic {
     private val effectClickHeavy by lazy { Effect.createPredefined(Effect.EFFECT_HEAVY_CLICK) }
     private val effectTick by lazy { Effect.createPredefined(Effect.EFFECT_TICK) }
     private val effectToggleOn by lazy {
-        Effect.startComposition().addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.8f).compose()
+        Effect.startComposition().addPrimitive(Effects.PRIMITIVE_TICK, 0.8f).compose()
     }
     private val effectToggleOff by lazy {
-        Effect.startComposition().addPrimitive(VibrationEffect.Composition.PRIMITIVE_TICK, 0.2f).addPrimitive(
-            VibrationEffect.Composition.PRIMITIVE_LOW_TICK, 0.5f, 80).compose()
+        Effect.startComposition().addPrimitive(Effects.PRIMITIVE_TICK, 0.2f).addPrimitive(
+            Effects.PRIMITIVE_LOW_TICK, 0.5f, 80).compose()
     }
     private val effectRise by lazy {
-        Effect.startComposition().addPrimitive(VibrationEffect.Composition.PRIMITIVE_LOW_TICK, 0.5f).addPrimitive(
-            VibrationEffect.Composition.PRIMITIVE_QUICK_RISE, 0.01f, 100).compose()
+        Effect.startComposition().addPrimitive(Effects.PRIMITIVE_LOW_TICK, 0.5f).addPrimitive(
+            Effects.PRIMITIVE_QUICK_RISE, 0.01f, 100).compose()
     }
 
-    fun click() = vibrate(effectClick)
-    fun clickHeavy() = vibrate(effectClickHeavy)
-    fun tick() = vibrate(effectTick)
-    fun toggle(state: Boolean) = vibrate(if (state) effectToggleOn else effectToggleOff)
-    fun rise() = vibrate(effectRise)
+    fun click() {
+        try {
+            vibrate(effectClick)
+        } catch (_: Exception) {}
+    }
+    fun clickHeavy() {
+        try {
+            vibrate(effectClickHeavy)
+        } catch (_: Exception) {}
+    }
+    fun tick() {
+        try {
+            vibrate(effectTick)
+        } catch (_: Exception) {}
+    }
+    fun toggle(state: Boolean) {
+        try {
+            vibrate(if (state) effectToggleOn else effectToggleOff)
+        } catch (_: Exception) {}
+    }
+    fun rise() {
+        try {
+            vibrate(effectRise)
+        } catch (_: Exception) {}
+    }
 
     fun vibrate(effect: Effect) {
-        try {
-            vibrator?.vibrate(effect)
-        } catch (_: Exception) {}
+        vibrator?.vibrate(effect)
     }
 
     fun init(context: Context) {
@@ -44,3 +62,4 @@ object Haptic {
 }
 
 private typealias Effect = VibrationEffect
+private typealias Effects = VibrationEffect.Composition
